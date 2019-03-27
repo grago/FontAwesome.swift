@@ -94,18 +94,18 @@ public extension UIFont {
     /// - parameter ofSize: The preferred font size.
     /// - returns: A UIFont object of FontAwesome.
     class func fontAwesome(ofSize fontSize: CGFloat, style: FontAwesomeStyle) -> UIFont {
-        loadFontAwesome(ofStyle: style)
+        getFontAwesome(ofStyle: style)
         return UIFont(name: style.fontName(), size: fontSize)!
     }
 
     /// Loads the FontAwesome font in to memory.
     /// This method should be called when setting icons without using code.
-    class func loadFontAwesome(ofStyle style: FontAwesomeStyle) {
+    class func getFontAwesome(ofStyle style: FontAwesomeStyle) {
         if UIFont.fontNames(forFamilyName: style.fontFamilyName()).contains(style.fontName()) {
             return
         }
 
-        FontLoader.loadFont(style.fontFilename())
+        FontLoader.getFont(style.fontFilename())
     }
     
     /// Get a UIFont object of FontAwesome for a given text style
@@ -116,7 +116,7 @@ public extension UIFont {
     class func fontAwesome(forTextStyle textStyle: UIFont.TextStyle, style: FontAwesomeStyle) -> UIFont {
         let userFont = UIFontDescriptor.preferredFontDescriptor(withTextStyle: textStyle)
         let pointSize = userFont.pointSize
-        loadFontAwesome(ofStyle: style)
+        getFontAwesome(ofStyle: style)
         let awesomeFont = UIFont(name: style.fontName(), size: pointSize)!
         
         if #available(iOS 11.0, *), #available(watchOSApplicationExtension 4.0, *), #available(tvOS 11.0, *) {
@@ -222,7 +222,7 @@ public extension UIImage {
 // MARK: - Private
 
 private class FontLoader {
-    class func loadFont(_ name: String) {
+    class func getFont(_ name: String) {
         guard
             let fontURL = URL.fontURL(for: name),
             let data = try? Data(contentsOf: fontURL),
